@@ -52,7 +52,8 @@ jobs:
         run: |
               echo "${{env.DOTNET_ROOT}}/oluo" \
               echo "${{env.DOTNET_ROOT}}"\
-              echo "$AZURE_WEBAPP_PACKAGE_PATH"\dotnet build --configuration Release
+              echo "$AZURE_WEBAPP_PACKAGE_PATH"\
+              dotnet build --source .\oluo --configuration Release
 
       - name: dotnet publish
         run:  dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/oluo\
