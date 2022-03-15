@@ -52,7 +52,10 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/oluo
+        run:  echo ${{env.DOTNET_ROOT}}/oluo 
+              echo ${{env.DOTNET_ROOT}}
+              echo $AZURE_WEBAPP_PACKAGE_PATH
+              dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/oluo
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
