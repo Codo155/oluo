@@ -34,6 +34,7 @@ jobs:
       
       - name: display structure
         run: |
+              cd oluo/oluo
               ls
         shell: bash
         
