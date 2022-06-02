@@ -31,6 +31,12 @@ jobs:
           password:  ${{ secrets.dockerhub_password }}
           # Log out from the Docker registry at the end of a job
           logout: true 
+      
+      - name: display structure
+        run: |
+              cd ./oluo/oluo/oluo
+              ls
+        shell: bash
         
       - name: Docker Build and Push
         uses: docker/build-push-action@v2
