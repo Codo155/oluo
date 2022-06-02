@@ -1,82 +1,54 @@
-# This workflow will build and push a .NET Core app to an Azure Web App when a commit is pushed to your default branch.
-#
-# This workflow assumes you have already created the target Azure App Service web app.
-# For instructions see https://docs.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net60&pivots=development-environment-vscode
-#
-# To configure this workflow:
-#
-# 1. Download the Publish Profile for your Azure Web App. You can download this file from the Overview page of your Web App in the Azure Portal.
-#    For more information: https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials
-#
-# 2. Create a secret in your repository named AZURE_WEBAPP_PUBLISH_PROFILE, paste the publish profile contents as the value of the secret.
-#    For instructions on obtaining the publish profile see: https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
-#
-# 3. Change the value for the AZURE_WEBAPP_NAME. Optionally, change the AZURE_WEBAPP_PACKAGE_PATH and DOTNET_VERSION environment variables below.
-#
-# For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
-# For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
+# This is a basic workflow to help you get started with Actions
 
-name: Build and deploy ASP.Net Core app to an Azure Web App
+name: Build and deploy 
 
-env:
-  AZURE_WEBAPP_NAME: oluo-webapp    # set this to the name of your Azure Web App
-  AZURE_WEBAPP_PACKAGE_PATH: './oluo'      # set this to the path to your web app project, defaults to the repository root
-  DOTNET_VERSION: '6.0'                 # set this to the .NET Core version to use
-
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  # This workflow contains a single job called "build"
+  build-and-push-docker-image:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
       
-      - name: Set up dependency caching for faster builds
-        uses: actions/cache@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.0.0
+        
+      - name: Docker Login
+        uses: docker/login-action@v1.10.0
         with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Build with dotnet
-        run:  echo ${{env.working-directory}}
-
-      - name: dotnet publish
-        run:  dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/oluo
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+          # Username used to log against the Docker registry
+          username:   ${{ secrets.dockerhub_username }}
+          # Password or personal access token used to log against the Docker registry
+          password:  ${{ secrets.dockerhub_password }}
+          # Log out from the Docker registry at the end of a job
+          logout: true 
+        
+      - name: Docker Build and Push
+        uses: docker/build-push-action@v2
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/oluo
-
-  deploy:
+          push: true
+          tags: codo155/oluo${{ github.sha }}
+          file: ./oluo/oluo/oluo/Dockerfile
+          
+          
+  Azure-Deployment:
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+      - name: Azure WebApp
+        uses: Azure/webapps-deploy@v2
         with:
-          name: .net-app
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          # Name of the Azure Web App
+          app-name: ex05
+          # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
+          publish-profile: ${{ secrets.publish_profile }}
+          # Enter an existing Slot other than the Production slot
+          images: index.docker.io/codo155/ex05:latest
