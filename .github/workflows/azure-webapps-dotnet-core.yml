@@ -43,7 +43,7 @@ jobs:
         with:
           push: true
           tags: codo155/oluo${{ github.sha }}
-          file: ./oluo/oluo/oluo/Dockerfile
+          file: ./oluo/oluo/Dockerfile
           
           
   Azure-Deployment:
