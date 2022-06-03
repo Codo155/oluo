@@ -34,7 +34,10 @@ jobs:
           password:  ${{ secrets.dockerhub_password }}
           # Log out from the Docker registry at the end of a job
           logout: true 
-      
+      - name: check dotnet
+        run:  |
+              dotnet --list-sdks
+        shell:  bash 
       - name: display structure
         run: |
               cd oluo/oluo
