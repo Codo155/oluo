@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>3c1aa258-dade-4406-a4f2-62f74e10eb8d</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <PackageId>$(AssemblyName)_assembly</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
