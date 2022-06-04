@@ -4,9 +4,7 @@
 #For more information, please see https://aka.ms/containercompat
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-Run ls
 WORKDIR /app
-Run ls
 EXPOSE 80
 EXPOSE 443
 
@@ -17,11 +15,11 @@ COPY ["oluo/oluo/oluo.csproj", "oluo_build/"]
 RUN dotnet restore "oluo_build/oluo.csproj"
 COPY . .
 WORKDIR "/src/oluo_build"	
+COPY . ./
 run ls
 RUN dotnet build "oluo.csproj" -c Release -o /app/build
 
 FROM build AS publish
-COPY . ./
 RUN dotnet publish "oluo.csproj" -c Release -o /app/publish
 
 FROM base AS final
