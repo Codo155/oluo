@@ -10,9 +10,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["oluo/oluo/oluo.csproj", "oluo/"]
-RUN dotnet restore "oluo/oluo.csproj"
+COPY ["oluo/oluo/oluo.csproj", "oluo_build/"]
+RUN dotnet restore "oluo_build/oluo.csproj"
 COPY . .
+RUN ls
 WORKDIR "/src/oluo"
 RUN dotnet build "oluo.csproj" -c Release -o /app/build
 
