@@ -16,11 +16,12 @@ RUN ls
 COPY ["oluo/oluo/oluo.csproj", "oluo_build/"]
 RUN dotnet restore "oluo_build/oluo.csproj"
 COPY . .
-WORKDIR "/src/oluo_build"
+WORKDIR "/src/oluo_build"	
 run ls
 RUN dotnet build "oluo.csproj" -c Release -o /app/build
 
 FROM build AS publish
+COPY . ./
 RUN dotnet publish "oluo.csproj" -c Release -o /app/publish
 
 FROM base AS final
