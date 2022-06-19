@@ -38,17 +38,13 @@ jobs:
         run:  |
               dotnet --list-sdks
         shell:  bash 
-      - name: display structure
-        run: |
-              cd oluo/oluo
-              ls
-        shell: bash
         
       - name: Docker Build and Push
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: codo155/oluo${{ github.sha }}
+          tags: codo155/oluo
+          # ${{ github.sha }}
           file: ./oluo/oluo/Dockerfile
           
           
@@ -59,8 +55,8 @@ jobs:
         uses: Azure/webapps-deploy@v2
         with:
           # Name of the Azure Web App
-          app-name: ex05
+          app-name: oluo
           # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
           publish-profile: ${{ secrets.publish_profile }}
           # Enter an existing Slot other than the Production slot
-          images: index.docker.io/codo155/ex05:latest
+          images: index.docker.io/codo155/oluo:latest
