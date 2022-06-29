@@ -1,4 +1,4 @@
-namespace oluo.Models
+namespace oluo_project.Models
 {
     public class ErrorViewModel
     {
