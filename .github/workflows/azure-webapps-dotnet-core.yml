@@ -15,7 +15,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build-and-push-docker-image:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       
@@ -49,7 +49,7 @@ jobs:
           
           
   Azure-Deployment:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Azure WebApp
         uses: Azure/webapps-deploy@v2
