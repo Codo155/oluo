@@ -22,5 +22,5 @@ RUN dotnet publish "oluo_project.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /app/build .
 ENTRYPOINT ["dotnet", "oluo_project.dll"]
