@@ -9,6 +9,7 @@
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <PackageId>$(AssemblyName)_assembly</PackageId>
     <RootNamespace>oluo_project</RootNamespace>
+    <AssemblyName>oluo_project</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
