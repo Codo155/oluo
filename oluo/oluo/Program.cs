@@ -19,9 +19,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+var dataTokens = new RouteValueDictionary {
+        {
+            "Namespaces", new[] { "oluo_project.oluo_project.HomeController" }
+        }
+    };
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}",
+    dataTokens: dataTokens);
 
 app.Run();
