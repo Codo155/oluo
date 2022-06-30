@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using oluo_project.Models;
+using oluo.Models;
 using System.Diagnostics;
 
-namespace oluo_project.Controllers
+namespace oluo.Controllers
 {
     public class HomeController : Controller
     {
