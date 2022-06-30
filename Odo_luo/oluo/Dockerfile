@@ -8,21 +8,18 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
-COPY ["Odo_luo/oluo/oluo.csproj", "oluo_build/"]
-RUN dotnet restore "oluo_build/oluo.csproj"
-COPY . .
-WORKDIR "/src/oluo_build"	
-COPY . .
-RUN dotnet build "oluo.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "oluo.csproj" -c Release -o /app/publish
-Run ls
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
-Run ls 
-COPY --from=publish /app/publish .
+
+COPY ./*.csproj ./
+WORKDIR /app
+RUN dotnet restore
+
+WORKDIR /app
+COPY . .
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 
+WORKDIR /app
+COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "oluo.dll"]
