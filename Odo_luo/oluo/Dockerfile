@@ -4,17 +4,17 @@
 #For more information, please see https://aka.ms/containercompat
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-Run ls
+RUN echo $(ls -1 /tmp/dir)
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build-env
 WORKDIR /app
-Run ls
+RUN echo $(ls -1 /tmp/dir)
 COPY ../*.csproj ./
 WORKDIR /app
-Run ls
+RUN echo $(ls -1 /tmp/dir)
 
 RUN dotnet restore "oluo.csproj"
 
