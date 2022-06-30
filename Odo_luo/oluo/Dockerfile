@@ -4,25 +4,25 @@
 #For more information, please see https://aka.ms/containercompat
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-RUN echo $(ls)
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build-env
-WORKDIR /app
-RUN echo $(ls)
-COPY ../*.csproj ./
-WORKDIR /app
-RUN echo $(ls -1 /tmp/dir)
-
-RUN dotnet restore "oluo.csproj"
-
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["Odo_luo/oluo/oluo.csproj", "oluo_build/"]
+RUN dotnet restore "oluo_build/oluo.csproj"
 COPY . .
-RUN dotnet publish -c Release -o out
+WORKDIR "/src/oluo_build"	
+COPY . .
+RUN dotnet build "oluo.csproj" -c Release -o /app/build
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 
+FROM build AS publish
+RUN dotnet publish "oluo.csproj" -c Release -o /app/publish
+Run ls
+
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
+Run ls 
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "oluo.dll"]
