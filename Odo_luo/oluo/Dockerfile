@@ -4,14 +4,14 @@
 #For more information, please see https://aka.ms/containercompat
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-RUN echo $(ls -1 /tmp/dir)
+RUN echo $(ls)
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS build-env
 WORKDIR /app
-RUN echo $(ls -1 /tmp/dir)
+RUN echo $(ls)
 COPY ../*.csproj ./
 WORKDIR /app
 RUN echo $(ls -1 /tmp/dir)
