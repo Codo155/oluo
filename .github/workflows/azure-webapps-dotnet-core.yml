@@ -46,6 +46,7 @@ jobs:
           
           
   Azure-Deployment:
+    needs:   build-and-push-docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Azure WebApp
