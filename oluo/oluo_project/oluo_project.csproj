@@ -11,6 +11,11 @@
     <RootNamespace>oluo_project</RootNamespace>
     <AssemblyName>oluo_project</AssemblyName>
     <Authors>oluo_project</Authors>
+    <Product>oluo_project</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
