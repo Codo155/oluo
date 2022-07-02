@@ -31,15 +31,22 @@ jobs:
           password:  ${{ secrets.dockerhub_password }}
           # Log out from the Docker registry at the end of a job
           logout: true 
+          
+      - name: Get the version
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:11})
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          pull: true
-          tags: codo155/oluo:latest
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --tag codo155/oluo:${{steps.vars.outputs.tag}}
 
+      - name: Push the tagged Docker image
+        run: docker push codo155/oluo:${{steps.vars.outputs.tag}}
+
+      - name: Build the latest Docker image
+        run: docker build . --file Dockerfile --tag codo155/oluo:latest
+
+      - name: Push the latest Docker image
+        run: docker push codo155/oluo:latest
           
   Azure-Deployment:
     needs:   build-and-push-docker-image
