@@ -1,9 +1,11 @@
 FROM node:alpine AS my-app-build
 WORKDIR /app
 COPY . .
+RUN npm install -g @angular/cli
+# COPY ./package.json .
 RUN npm install 
-WORKDIR ../
-RUN npm run build
+COPY . .
+RUN ng build
 
 # stage 2
 
