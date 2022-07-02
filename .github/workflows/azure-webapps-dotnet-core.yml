@@ -19,8 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: npm setup
-        uses: ng-easy/npm-setup@v1.7.2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.3.0
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2.0.0
