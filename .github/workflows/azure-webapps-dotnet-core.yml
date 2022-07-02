@@ -34,7 +34,7 @@ jobs:
 
       - name: Get the version
         id: vars
-        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:11})
           
       - name: Build the tagged Docker image
         run: docker build . --file Dockerfile --tag codo155/oluo:${{steps.vars.outputs.tag}}
