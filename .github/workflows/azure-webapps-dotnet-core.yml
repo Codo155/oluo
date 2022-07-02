@@ -31,22 +31,7 @@ jobs:
           password:  ${{ secrets.dockerhub_password }}
           # Log out from the Docker registry at the end of a job
           logout: true 
-          
-      - name: Get the version
-        id: vars
-        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:11})
 
-      - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag codo155/oluo
-
-      - name: Push the tagged Docker image
-        run: docker push codo155/oluo:${{steps.vars.outputs.tag}}
-
-      - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --tag codo155/oluo:latest
-
-      - name: Push the latest Docker image
-        run: docker push codo155/oluo:latest
           
   Azure-Deployment:
     needs:   build-and-push-docker-image
@@ -60,4 +45,4 @@ jobs:
           # Applies to Web Apps(Windows and Linux) and Web App Containers(linux). Multi container scenario not supported. Publish profile (*.publishsettings) file contents with Web Deploy secrets
           publish-profile: ${{ secrets.publish_profile }}
           # Enter an existing Slot other than the Production slot
-          images: index.docker.io/codo155/oluo:latest
+          images: index.docker.io/codo155/oluo_test:latest
