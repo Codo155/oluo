@@ -1,4 +1,12 @@
-﻿body {
+﻿img.profile
+{
+    max-width: 100%;
+    min-width: 300px;
+    height: auto;
+    width: auto;
+}
+
+body {
     margin-top: 20px;
 }
 
