@@ -142,3 +142,7 @@ body {
 .single-timeline-area .single-timeline-content:focus .timeline-text h6 {
     color: #3f43fd;
 }
+
+.checked {
+    color: orange;
+  }
